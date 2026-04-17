@@ -1,0 +1,15 @@
+{
+  "name": "Divy Lathiya | Portfolio",
+  "description": "Professional portfolio of Divy Lathiya, a B.Tech CSE student showcasing skills in web development, mobile apps, and more.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ],
+  "majorCapabilities": [
+    "React",
+    "Tailwind CSS",
+    "Framer Motion",
+    "Smooth Scrolling"
+  ]
+}
