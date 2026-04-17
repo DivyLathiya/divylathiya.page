@@ -58,7 +58,7 @@ const ACADEMIC_JOURNEY = [
   },
   {
     period: '2021 - 2023',
-    institution: 'Higher Secondary School',
+    institution: 'P. P. Savani Chaitanya Vidya Sankul',
     degree: 'Std. 11th, 12th',
     icon: <GraduationCap className="w-5 h-5" />,
     link: "#"
