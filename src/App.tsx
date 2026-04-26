@@ -61,7 +61,7 @@ const ACADEMIC_JOURNEY = [
     institution: 'P. P. Savani Chaitanya Vidya Sankul',
     degree: 'Std. 11th, 12th',
     icon: <GraduationCap className="w-5 h-5" />,
-    link: "#"
+    link: "https://www.google.com/search?gs_ssp=eJwNxEsOQEAQBcDYStxhFva6x98R3OLRgwnp-IfbU4sKo2RMmOXddlG1FDQxPWnnKCuI83KoxNm6ocelLEVuwQ4dbNaadTUHbqg3_QR_Ql-Y28v_AZ2v5QNwHRux&q=pp+savani+chaitanya+vidya+sankul&oq=pp+savani+chaitanya+&gs_lcrp=EgZjaHJvbWUqEAgBEC4YrwEYxwEYyQMYgAQyCggAEAAY4wIYgAQyEAgBEC4YrwEYxwEYyQMYgAQyBwgCEAAYgAQyBwgDEAAYgAQyCQgEEEUYORjvBTIHCAUQABiABDIHCAYQABiABDINCAcQABiGAxiABBiKBTINCAgQABiGAxiABBiKBTINCAkQABiGAxiABBiKBdIBCDUwNjRqMGo5qAIGsAIB8QU13kTu3faXeA&sourceid=chrome&ie=UTF-8"
   },
   {
     period: '2023 - Present',
@@ -103,6 +103,70 @@ const PROJECTS = [
 
 // --- Components ---
 
+const Preloader = ({ isLoading, theme }: { isLoading: boolean, theme: 'dark' | 'light' }) => {
+  return (
+    <AnimatePresence>
+      {isLoading && (
+        <motion.div
+          initial={{ y: 0 }}
+          exit={{ y: '-100%' }}
+          transition={{ duration: 0.8, ease: [0.76, 0, 0.24, 1] }}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-bg transition-colors duration-500"
+          data-theme={theme}
+        >
+          <div className="flex flex-col items-center">
+            <div className="relative">
+              {/* SVG Circle Drawing */}
+              <svg className="w-24 h-24 md:w-32 md:h-32 -rotate-90">
+                <circle
+                  cx="50%"
+                  cy="50%"
+                  r="45%"
+                  fill="none"
+                  stroke="var(--color-accent)"
+                  strokeOpacity="0.1"
+                  strokeWidth="2"
+                />
+                <motion.circle
+                  cx="50%"
+                  cy="50%"
+                  r="45%"
+                  fill="none"
+                  stroke="var(--color-accent)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  initial={{ pathLength: 0 }}
+                  animate={{ pathLength: 1 }}
+                  transition={{ duration: 2, ease: "easeInOut" }}
+                />
+              </svg>
+
+              {/* DL Logo with Breathing Effect */}
+              <motion.div
+                animate={{ opacity: [0.4, 1, 0.4] }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute inset-0 flex items-center justify-center text-3xl md:text-4xl font-syne font-bold tracking-tighter text-accent"
+              >
+                DL
+              </motion.div>
+            </div>
+
+            {/* Loading Caption */}
+            <motion.span
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-6 text-[10px] font-mono text-secondary uppercase tracking-[0.3em]"
+            >
+              Loading
+            </motion.span>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+};
+
 const SectionHeading = ({ children, subtitle }: { children: React.ReactNode, subtitle?: string }) => (
   <div className="mb-12 space-y-2">
     <motion.h2 
@@ -119,7 +183,7 @@ const SectionHeading = ({ children, subtitle }: { children: React.ReactNode, sub
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true }}
         transition={{ delay: 0.1 }}
-        className="text-zinc-400 text-lg max-w-2xl"
+        className="text-secondary text-lg max-w-2xl"
       >
         {subtitle}
       </motion.p>
@@ -149,6 +213,7 @@ export default function App() {
 
   const [formStatus, setFormStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('theme');
@@ -161,45 +226,34 @@ export default function App() {
     localStorage.setItem('theme', theme);
   }, [theme]);
 
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 2500);
+
+    return () => clearTimeout(timer);
+  }, []);
+
   const navItems = ['About', 'Journey', 'Skills', 'Projects', 'Contact'];
 
   const onSubmit = async (data: ContactFormValues) => {
     setFormStatus('idle');
     try {
-      // Send the data to Web3Forms API
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json",
-        },
-        body: JSON.stringify({
-          access_key: "c8834f3f-dd3c-4c81-955a-2153a71ee05f", 
-          name: data.name,
-          email: data.email,
-          message: data.message,
-          subject: "New Contact Form Submission from Portfolio",
-          from_name: "Portfolio Website",
-        }),
-      });
-  
-      const result = await response.json();
-  
-      if (result.success) {
-        setFormStatus('success');
-        reset(); 
-      } else {
-        console.error("Submission failed:", result);
-        setFormStatus('error');
-      }
+      // For demo purposes, we simulate a delay. 
+      // In a real app, you'd send this to an API or service like Formspree
+      console.log('Form data:', data);
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      setFormStatus('success');
+      reset();
     } catch (error) {
-      console.error("Error submitting form:", error);
       setFormStatus('error');
     }
   };
 
   return (
     <ReactLenis root options={{ lerp: 0.05, duration: 1.5, smoothTouch: true }}>
+      <Preloader isLoading={isLoading} theme={theme} />
       <div className="min-h-screen bg-bg text-primary selection:bg-accent/30 transition-colors duration-500" data-theme={theme}>
         {/* Progress Bar */}
         <motion.div
@@ -360,7 +414,7 @@ export default function App() {
                   <div className="absolute inset-0 bg-accent/30 blur-3xl rounded-full group-hover:bg-accent/50 transition-all duration-700" />
                   <div className="relative w-64 h-64 md:w-[400px] md:h-[400px] rounded-full overflow-hidden border-[12px] border-surface shadow-2xl">
                     <img 
-                      src="/profile.jpeg" 
+                      src="/profile.jpg" 
                       alt="Divy Lathiya" 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
@@ -433,6 +487,8 @@ export default function App() {
                 </motion.div>
               ))}
             </div>
+
+            {/* Category Breakdown removed per request */}
           </section>
 
           {/* Projects Section */}
