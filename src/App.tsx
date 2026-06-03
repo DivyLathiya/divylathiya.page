@@ -386,7 +386,7 @@ export default function App() {
                 </div>
                 
                 <p className="text-lg md:text-xl text-secondary max-w-xl leading-relaxed mx-auto lg:mx-0">
-                  19-year-old CSE student passionate about technology and innovation. I build real-world solutions through clean code and logical thinking. Gaming and aviation fuel my curiosity — I love understanding how systems work from the inside out.
+                  20-year-old CSE student passionate about technology and innovation. I build real-world solutions through clean code and logical thinking. Gaming and aviation fuel my curiosity — I love understanding how systems work from the inside out.
                 </p>
 
                 <div className="flex flex-wrap justify-center lg:justify-start gap-4 pt-4">
